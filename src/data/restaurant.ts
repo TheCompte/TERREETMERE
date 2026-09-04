@@ -32,22 +32,23 @@ export const restaurant = {
   },
 
   /* ---- Liens réels à compléter --------------------------------
-     Laissez la chaîne vide tant que le lien officiel n'est pas
-     confirmé : le site affichera alors un repli propre (appel
-     téléphonique), jamais de fausse destination.              */
+     Tant qu'une URL officielle n'est pas confirmée, laissez la
+     chaîne vide. Le site n'invente JAMAIS de destination et ne
+     fait AUCUN repli vers le téléphone : le bouton concerné
+     indique simplement que son lien est en attente.
+     Renseignez l'URL ici — rien d'autre à modifier.          */
   links: {
-    /** URL du menu en ligne (PDF, site menu, etc.) */
+    /** URL officielle de la carte — pilote le bouton « Voir la carte » */
     menuUrl: "",
-    /** URL du module de réservation en ligne */
+    /** UNIQUE valeur pilotant TOUS les boutons « Réserver » du site */
     reservationUrl: "",
-    /** URL de la page des avis Google */
+    /** URL officielle de la page des avis Google */
     googleReviewsUrl: "",
   },
 
-  /** Itinéraire Google Maps (adresse réelle encodée) */
+  /** Itinéraire Google Maps — bouton « Itinéraire » */
   mapsUrl:
-    "https://www.google.com/maps/search/?api=1&query=" +
-    encodeURIComponent("Terre & Mer, 214 Quai du Port, 13002 Marseille, France"),
+    "https://www.google.com/maps/search/?api=1&query=214%20Quai%20du%20Port%2013002%20Marseille",
 
   geo: { latitude: 43.2967, longitude: 5.3682 },
 
@@ -91,6 +92,17 @@ export const restaurant = {
     },
   },
 } as const;
+
+/* ---- Destination des boutons « Réserver » ---------------------
+   Valeur UNIQUE partagée par tous les boutons de réservation
+   (hero, navigation, barre mobile, section réservation) :
+   - si restaurant.links.reservationUrl est renseignée → elle est ouverte ;
+   - sinon → repli vers la section réservation de la page (#contact).
+   Aucun repli vers le téléphone, aucune URL inventée.          */
+export const reservationHref =
+  restaurant.links.reservationUrl.trim() !== ""
+    ? restaurant.links.reservationUrl
+    : "#contact";
 
 /* ---- Navigation -------------------------------------------- */
 export const navItems = [

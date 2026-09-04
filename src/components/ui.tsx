@@ -6,7 +6,6 @@ import {
   type ElementType,
   type ReactNode,
 } from "react";
-import { restaurant } from "../data/restaurant";
 
 /* ============================================================
    Hooks
@@ -251,14 +250,16 @@ export function ActionLink({
   className = "",
   children,
   noticeClassName = "",
+  notice = "Lien en attente de confirmation par le restaurant.",
 }: {
   url: string;
   className?: string;
   children: ReactNode;
   noticeClassName?: string;
+  /** Message visible affiché tant que l'URL officielle n'est pas configurée */
+  notice?: string;
 }) {
-  const [open, setOpen] = useState(false);
-
+  /* URL officielle configurée dans src/data/restaurant.ts : lien direct. */
   if (url && url.trim() !== "") {
     return (
       <a
@@ -272,32 +273,40 @@ export function ActionLink({
     );
   }
 
+  /* URL non confirmée : le bouton n'effectue AUCUNE redirection
+     (jamais vers le téléphone) et indique visiblement que le lien
+     officiel est en attente. */
   return (
     <span className="inline-flex flex-col items-start gap-3">
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        className={className}
+        aria-disabled="true"
+        onClick={(e) => e.preventDefault()}
+        className={`${className} cursor-not-allowed opacity-80`}
       >
         {children}
       </button>
-      {open && (
-        <span
-          role="status"
-          className={`notice-in inline-block max-w-sm text-sm font-normal normal-case tracking-normal leading-relaxed ${noticeClassName}`}
+      <span
+        role="status"
+        className={`inline-flex max-w-sm items-center gap-2.5 text-sm font-normal normal-case tracking-normal leading-relaxed ${noticeClassName}`}
+      >
+        <svg
+          viewBox="0 0 16 16"
+          className="h-3.5 w-3.5 shrink-0"
+          fill="none"
+          aria-hidden="true"
         >
-          Ce lien sera intégré dès confirmation par le restaurant. En
-          attendant, appelez-nous au{" "}
-          <a
-            href={restaurant.phone.href}
-            className="font-semibold underline underline-offset-4"
-          >
-            {restaurant.phone.display}
-          </a>
-          .
-        </span>
-      )}
+          <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.4" />
+          <path
+            d="M8 4.5V8l2.3 1.4"
+            stroke="currentColor"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        {notice}
+      </span>
     </span>
   );
 }

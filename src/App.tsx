@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { restaurant } from "./data/restaurant";
+import { reservationHref, restaurant } from "./data/restaurant";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
 import TrustBand from "./components/TrustBand";
@@ -12,8 +12,6 @@ import ReviewsSection from "./components/ReviewsSection";
 import ReservationSection from "./components/ReservationSection";
 import Footer from "./components/Footer";
 import { PhoneIcon } from "./components/ui";
-
-const reserveHref = restaurant.links.reservationUrl || "#contact";
 
 /* Barre de réservation mobile, toujours à portée de pouce */
 function MobileCta() {

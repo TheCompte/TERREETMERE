@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { navItems, restaurant } from "../data/restaurant";
+import { navItems, reservationHref, restaurant } from "../data/restaurant";
 import {
   BurgerIcon,
   CloseIcon,
@@ -8,8 +8,6 @@ import {
   useBodyLock,
   Wordmark,
 } from "./ui";
-
-const reserveHref = restaurant.links.reservationUrl || "#contact";
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -108,7 +106,7 @@ export default function Nav() {
 
           <div className="flex items-center gap-3">
             <a
-              href={reserveHref}
+              href={reservationHref}
               className={`hidden items-center gap-2 px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.22em] transition-all duration-300 sm:inline-flex ${
                 light
                   ? "bg-champagne-400 text-marine-950 hover:bg-champagne-300"
@@ -168,7 +166,7 @@ export default function Nav() {
           ))}
 
           <a
-            href={reserveHref}
+            href={reservationHref}
             onClick={() => setOpen(false)}
             tabIndex={open ? 0 : -1}
             style={{ animationDelay: open ? "0.55s" : "0s" }}

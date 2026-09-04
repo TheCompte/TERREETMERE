@@ -1,7 +1,5 @@
-import { restaurant } from "../data/restaurant";
+import { reservationHref, restaurant } from "../data/restaurant";
 import { ArrowRightIcon, PhoneIcon, Reveal, StarIcon } from "./ui";
-
-const reserveHref = restaurant.links.reservationUrl || "#contact";
 
 export default function Hero() {
   return (
@@ -54,7 +52,7 @@ export default function Hero() {
 
         <Reveal delay={400} className="mt-10 flex flex-wrap items-center gap-4 md:gap-6">
           <a
-            href={reserveHref}
+            href={reservationHref}
             className="group inline-flex items-center gap-3 bg-champagne-400 px-8 py-4 text-xs font-bold uppercase tracking-[0.24em] text-marine-950 transition-colors duration-300 hover:bg-champagne-300"
           >
             Réserver une table
