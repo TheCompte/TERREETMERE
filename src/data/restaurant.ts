@@ -135,7 +135,7 @@ export const navItems = [
   { label: "Accueil", href: "#accueil" },
   { label: "L'expérience", href: "#experience" },
   { label: "La cuisine", href: "#cuisine" },
-  { label: "La carte", href: "#carte" },
+  { label: "La carte", href: "/carte" },
   { label: "Galerie", href: "#galerie" },
   { label: "Le restaurant", href: "#restaurant" },
   { label: "Contact", href: "#contact" },

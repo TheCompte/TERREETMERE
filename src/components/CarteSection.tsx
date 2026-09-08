@@ -1,5 +1,6 @@
+import { Link } from "react-router-dom";
 import { restaurant } from "../data/restaurant";
-import { ActionLink, ArrowRightIcon, Overline, Reveal } from "./ui";
+import { ArrowRightIcon, Overline, Reveal } from "./ui";
 
 const marqueeWords = [
   "Poissons du jour",
@@ -78,13 +79,13 @@ export default function CarteSection() {
               </p>
             </Reveal>
             <Reveal delay={300} className="mt-10">
-              <ActionLink
-                url={restaurant.links.menuUrl}
+              <Link
+                to="/carte"
                 className="group inline-flex items-center gap-3 bg-champagne-400 px-9 py-4.5 text-xs font-bold uppercase tracking-[0.26em] text-marine-950 transition-colors duration-300 hover:bg-champagne-300"
               >
                 Voir la carte
                 <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />
-              </ActionLink>
+              </Link>
               <p className="mt-5 max-w-md font-display text-sm italic text-marine-300">
                 La carte complète sera intégrée ici dès sa mise en ligne — les
                 suggestions du jour se découvrent sur place ou au{" "}

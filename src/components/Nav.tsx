@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { navItems, reservationHref, restaurant } from "../data/restaurant";
 import {
   BurgerIcon,
@@ -13,6 +14,7 @@ export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("#accueil");
+  const location = useLocation();
 
   useBodyLock(open);
 
@@ -67,8 +69,8 @@ export default function Nav() {
       >
         <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 md:px-8">
           {/* Logo */}
-          <a
-            href="#accueil"
+          <Link
+            to="/"
             className={`transition-colors duration-300 ${
               light ? "text-ivory-50" : "text-marine-900"
             }`}
@@ -79,29 +81,52 @@ export default function Nav() {
               className="text-lg md:text-xl"
               ampClassName={light ? "text-champagne-300" : "text-terra-500"}
             />
-          </a>
+          </Link>
 
           {/* Navigation desktop */}
           <nav className="hidden items-center gap-7 lg:flex" aria-label="Navigation principale">
-            {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className={`relative text-[11.5px] font-semibold uppercase tracking-[0.18em] transition-colors duration-300 after:absolute after:-bottom-1.5 after:left-0 after:h-px after:bg-current after:transition-all after:duration-300 ${
-                  active === item.href ? "after:w-full" : "after:w-0 hover:after:w-full"
-                } ${
-                  light
-                    ? active === item.href
-                      ? "text-champagne-300"
-                      : "text-ivory-50/85 hover:text-ivory-50"
-                    : active === item.href
-                      ? "text-terra-500"
-                      : "text-marine-800 hover:text-marine-950"
-                }`}
-              >
-                {item.label}
-              </a>
-            ))}
+            {navItems.map((item) => {
+              const isExternal = item.href.startsWith("/");
+              const isActive = isExternal
+                ? location.pathname === item.href
+                : active === item.href;
+
+              const className = `relative text-[11.5px] font-semibold uppercase tracking-[0.18em] transition-colors duration-300 after:absolute after:-bottom-1.5 after:left-0 after:h-px after:bg-current after:transition-all after:duration-300 ${
+                isActive ? "after:w-full" : "after:w-0 hover:after:w-full"
+              } ${
+                light
+                  ? isActive
+                    ? "text-champagne-300"
+                    : "text-ivory-50/85 hover:text-ivory-50"
+                  : isActive
+                    ? "text-terra-500"
+                    : "text-marine-800 hover:text-marine-950"
+              }`;
+
+              if (isExternal) {
+                return (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    className={className}
+                    onClick={() => setOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              }
+
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className={className}
+                  onClick={() => setOpen(false)}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
           </nav>
 
           <div className="flex items-center gap-3">
@@ -145,25 +170,55 @@ export default function Nav() {
           className="flex flex-1 flex-col justify-center gap-1 overflow-y-auto px-8 pt-24 pb-8"
           aria-label="Navigation mobile"
         >
-          {navItems.map((item, i) => (
-            <a
-              key={item.href}
-              href={item.href}
-              onClick={() => setOpen(false)}
-              tabIndex={open ? 0 : -1}
-              style={{ animationDelay: open ? `${0.08 + i * 0.06}s` : "0s" }}
-              className={`drawer-link group flex items-baseline gap-4 border-b border-ivory-50/10 py-3.5 ${
-                active === item.href ? "text-champagne-300" : "text-ivory-50"
-              }`}
-            >
-              <span className="font-display text-xs italic text-champagne-400/70">
-                0{i + 1}
-              </span>
-              <span className="font-display text-3xl font-light tracking-wide transition-transform duration-300 group-hover:translate-x-2">
-                {item.label}
-              </span>
-            </a>
-          ))}
+          {navItems.map((item, i) => {
+            const isExternal = item.href.startsWith("/");
+            const isActive = isExternal
+              ? location.pathname === item.href
+              : active === item.href;
+
+            const className = `drawer-link group flex items-baseline gap-4 border-b border-ivory-50/10 py-3.5 ${
+              isActive ? "text-champagne-300" : "text-ivory-50"
+            }`;
+
+            const content = (
+              <>
+                <span className="font-display text-xs italic text-champagne-400/70">
+                  0{i + 1}
+                </span>
+                <span className="font-display text-3xl font-light tracking-wide transition-transform duration-300 group-hover:translate-x-2">
+                  {item.label}
+                </span>
+              </>
+            );
+
+            if (isExternal) {
+              return (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  onClick={() => setOpen(false)}
+                  tabIndex={open ? 0 : -1}
+                  style={{ animationDelay: open ? `${0.08 + i * 0.06}s` : "0s" }}
+                  className={className}
+                >
+                  {content}
+                </Link>
+              );
+            }
+
+            return (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                tabIndex={open ? 0 : -1}
+                style={{ animationDelay: open ? `${0.08 + i * 0.06}s` : "0s" }}
+                className={className}
+              >
+                {content}
+              </a>
+            );
+          })}
 
           <a
             href={reservationHref}
