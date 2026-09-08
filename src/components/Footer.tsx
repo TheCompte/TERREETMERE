@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { navItems, restaurant } from "../data/restaurant";
 import {
   ActionLink,
@@ -75,20 +76,37 @@ export default function Footer() {
               Navigation
             </p>
             <ul className="mt-6 space-y-3">
-              {navItems.map((item) => (
-                <li key={item.href}>
-                  <a
-                    href={item.href}
-                    className="group inline-flex items-center gap-2 text-sm text-marine-200 transition-all duration-300 hover:translate-x-1 hover:text-ivory-50"
-                  >
+              {navItems.map((item) => {
+                const isExternal = item.href.startsWith("/");
+                const linkContent = (
+                  <>
                     <span
                       aria-hidden="true"
                       className="h-px w-0 bg-champagne-400 transition-all duration-300 group-hover:w-4"
                     />
                     {item.label}
-                  </a>
-                </li>
-              ))}
+                  </>
+                );
+                const linkClass = "group inline-flex items-center gap-2 text-sm text-marine-200 transition-all duration-300 hover:translate-x-1 hover:text-ivory-50";
+
+                if (isExternal) {
+                  return (
+                    <li key={item.href}>
+                      <Link to={item.href} className={linkClass}>
+                        {linkContent}
+                      </Link>
+                    </li>
+                  );
+                }
+
+                return (
+                  <li key={item.href}>
+                    <a href={item.href} className={linkClass}>
+                      {linkContent}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
 

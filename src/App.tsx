@@ -1,3 +1,4 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { reservationHref, restaurant } from "./data/restaurant";
 import Nav from "./components/Nav";
@@ -11,7 +12,30 @@ import RestaurantSection from "./components/RestaurantSection";
 import ReviewsSection from "./components/ReviewsSection";
 import ReservationSection from "./components/ReservationSection";
 import Footer from "./components/Footer";
+import CartePage from "./components/CartePage";
+import SeoHead from "./components/SeoHead";
 import { PhoneIcon } from "./components/ui";
+
+function HomePage() {
+  return (
+    <>
+      <Nav />
+      <main>
+        <Hero />
+        <TrustBand />
+        <Experience />
+        <Cuisine />
+        <CarteSection />
+        <Gallery />
+        <RestaurantSection />
+        <ReviewsSection />
+        <ReservationSection />
+      </main>
+      <Footer />
+      <MobileCta />
+    </>
+  );
+}
 
 /* Barre de réservation mobile, toujours à portée de pouce */
 function MobileCta() {
@@ -66,26 +90,17 @@ function MobileCta() {
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-ivory-50 text-marine-900">
-      {/* Grain ambiant */}
-      <div className="noise-overlay" aria-hidden="true" />
+    <BrowserRouter>
+      <SeoHead />
+      <div className="min-h-screen bg-ivory-50 text-marine-900">
+        {/* Grain ambiant */}
+        <div className="noise-overlay" aria-hidden="true" />
 
-      <Nav />
-
-      <main>
-        <Hero />
-        <TrustBand />
-        <Experience />
-        <Cuisine />
-        <CarteSection />
-        <Gallery />
-        <RestaurantSection />
-        <ReviewsSection />
-        <ReservationSection />
-      </main>
-
-      <Footer />
-      <MobileCta />
-    </div>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/carte" element={<CartePage />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
