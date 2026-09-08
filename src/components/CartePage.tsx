@@ -80,7 +80,7 @@ export default function CartePage() {
             const isAlternate = itemIndex % 3 === 1;
             
             if (isFeatured) {
-              // Featured dish - large, cinematic
+              // Featured dish - large, cinematic (with image if available)
               return (
                 <Reveal key={item.id} delay={itemIndex * 100}>
                   <button
@@ -89,35 +89,70 @@ export default function CartePage() {
                     className="group block w-full text-left"
                     aria-label={`Voir le détail : ${item.name}`}
                   >
-                    <div className="grid gap-8 md:grid-cols-12 md:gap-12 lg:gap-16">
-                      {/* Large image */}
-                      <div className="md:col-span-7 lg:col-span-8">
-                        <div className="img-breathe relative overflow-hidden bg-marine-900">
-                          <img
-                            src={item.image || "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=80"}
-                            alt={item.name}
-                            loading="lazy"
-                            className="aspect-[16/10] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-marine-950/60 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                    {item.image ? (
+                      // Layout with image
+                      <div className="grid gap-8 md:grid-cols-12 md:gap-12 lg:gap-16">
+                        {/* Large image */}
+                        <div className="md:col-span-7 lg:col-span-8">
+                          <div className="img-breathe relative overflow-hidden bg-marine-900">
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              loading="lazy"
+                              className="aspect-[16/10] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-marine-950/60 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                            
+                            {/* Featured badge */}
+                            <div className="absolute top-6 left-6">
+                              <span className="inline-block bg-champagne-400/95 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.3em] text-marine-950 backdrop-blur-sm">
+                                Signature
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Content */}
+                        <div className="flex flex-col justify-center md:col-span-5 lg:col-span-4">
+                          <h3 className="font-display text-3xl leading-tight font-light text-marine-950 transition-colors duration-300 group-hover:text-terra-500 md:text-4xl lg:text-5xl">
+                            {item.name}
+                          </h3>
                           
-                          {/* Featured badge */}
-                          <div className="absolute top-6 left-6">
-                            <span className="inline-block bg-champagne-400/95 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.3em] text-marine-950 backdrop-blur-sm">
-                              Signature
+                          {item.description && (
+                            <p className="mt-6 text-base leading-relaxed text-marine-800/85 md:text-lg">
+                              {item.description}
+                            </p>
+                          )}
+                          
+                          <div className="mt-8 flex items-baseline gap-4">
+                            <span className="font-display text-4xl font-light text-marine-900 md:text-5xl">
+                              {item.price.toFixed(2).replace(".", ",")}
                             </span>
+                            <span className="text-xl text-marine-700">€</span>
+                          </div>
+                          
+                          <div className="mt-6 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-terra-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                            <span>Voir le détail</span>
+                            <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                           </div>
                         </div>
                       </div>
-                      
-                      {/* Content */}
-                      <div className="flex flex-col justify-center md:col-span-5 lg:col-span-4">
+                    ) : (
+                      // Layout without image - elegant text presentation
+                      <div className="relative border-l-2 border-champagne-400/40 pl-8 md:pl-12">
+                        {/* Featured badge */}
+                        <div className="mb-6">
+                          <span className="inline-block bg-champagne-400/20 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.3em] text-champagne-500">
+                            Signature
+                          </span>
+                        </div>
+                        
                         <h3 className="font-display text-3xl leading-tight font-light text-marine-950 transition-colors duration-300 group-hover:text-terra-500 md:text-4xl lg:text-5xl">
                           {item.name}
                         </h3>
                         
                         {item.description && (
-                          <p className="mt-6 text-base leading-relaxed text-marine-800/85 md:text-lg">
+                          <p className="mt-6 max-w-2xl text-base leading-relaxed text-marine-800/85 md:text-lg">
                             {item.description}
                           </p>
                         )}
@@ -134,61 +169,14 @@ export default function CartePage() {
                           <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                         </div>
                       </div>
-                    </div>
+                    )}
                   </button>
                 </Reveal>
               );
             }
             
             if (isAlternate) {
-              // Alternate layout - image on right
-              return (
-                <Reveal key={item.id} delay={itemIndex * 100}>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedItem(item)}
-                    className="group block w-full text-left"
-                    aria-label={`Voir le détail : ${item.name}`}
-                  >
-                    <div className="grid gap-8 md:grid-cols-12 md:gap-12">
-                      {/* Content - left */}
-                      <div className="flex flex-col justify-center md:col-span-5 md:col-start-1">
-                        <h3 className="font-display text-2xl leading-tight font-light text-marine-950 transition-colors duration-300 group-hover:text-terra-500 md:text-3xl">
-                          {item.name}
-                        </h3>
-                        
-                        {item.description && (
-                          <p className="mt-4 text-sm leading-relaxed text-marine-800/85 md:text-base">
-                            {item.description}
-                          </p>
-                        )}
-                        
-                        <div className="mt-6 flex items-baseline gap-3">
-                          <span className="font-display text-3xl font-light text-marine-900 md:text-4xl">
-                            {item.price.toFixed(2).replace(".", ",")}
-                          </span>
-                          <span className="text-lg text-marine-700">€</span>
-                        </div>
-                      </div>
-                      
-                      {/* Image - right */}
-                      <div className="md:col-span-6 md:col-start-7">
-                        <div className="img-breathe relative overflow-hidden bg-marine-900">
-                          <img
-                            src={item.image || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80"}
-                            alt={item.name}
-                            loading="lazy"
-                            className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </button>
-                </Reveal>
-              );
-            }
-            
-            // Standard layout - compact, elegant
+            // Alternate layout - image on right (if available)
             return (
               <Reveal key={item.id} delay={itemIndex * 100}>
                 <button
@@ -197,21 +185,71 @@ export default function CartePage() {
                   className="group block w-full text-left"
                   aria-label={`Voir le détail : ${item.name}`}
                 >
-                  <div className="grid gap-8 md:grid-cols-12 md:gap-12">
-                    {/* Image - left */}
-                    <div className="md:col-span-5">
-                      <div className="img-breathe relative overflow-hidden bg-marine-900">
-                        <img
-                          src={item.image || "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80"}
-                          alt={item.name}
-                          loading="lazy"
-                          className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                        />
+                  <div className={`gap-8 md:grid md:grid-cols-12 md:gap-12 ${item.image ? '' : 'flex flex-col'}`}>
+                    {/* Content */}
+                    <div className={`flex flex-col justify-center ${item.image ? 'md:col-span-5 md:col-start-1' : ''}`}>
+                      <h3 className="font-display text-2xl leading-tight font-light text-marine-950 transition-colors duration-300 group-hover:text-terra-500 md:text-3xl">
+                        {item.name}
+                      </h3>
+                      
+                      {item.description && (
+                        <p className="mt-4 text-sm leading-relaxed text-marine-800/85 md:text-base">
+                          {item.description}
+                        </p>
+                      )}
+                      
+                      <div className="mt-6 flex items-baseline gap-3">
+                        <span className="font-display text-3xl font-light text-marine-900 md:text-4xl">
+                          {item.price.toFixed(2).replace(".", ",")}
+                        </span>
+                        <span className="text-lg text-marine-700">€</span>
                       </div>
                     </div>
                     
+                    {/* Image - right (only if available) */}
+                    {item.image && (
+                      <div className="md:col-span-6 md:col-start-7">
+                        <div className="img-breathe relative overflow-hidden bg-marine-900">
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            loading="lazy"
+                            className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </button>
+              </Reveal>
+            );            }
+            
+            // Standard layout - compact, elegant (image on left if available)
+            return (
+              <Reveal key={item.id} delay={itemIndex * 100}>
+                <button
+                  type="button"
+                  onClick={() => setSelectedItem(item)}
+                  className="group block w-full text-left"
+                  aria-label={`Voir le détail : ${item.name}`}
+                >
+                  <div className={`gap-8 md:grid md:grid-cols-12 md:gap-12 ${item.image ? '' : 'flex flex-col-reverse'}`}>
+                    {/* Image - left (only if available) */}
+                    {item.image && (
+                      <div className="md:col-span-5">
+                        <div className="img-breathe relative overflow-hidden bg-marine-900">
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            loading="lazy"
+                            className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                          />
+                        </div>
+                      </div>
+                    )}
+                    
                     {/* Content - right */}
-                    <div className="flex flex-col justify-center md:col-span-6 md:col-start-7">
+                    <div className={`flex flex-col justify-center ${item.image ? 'md:col-span-6 md:col-start-7' : ''}`}>
                       <h3 className="font-display text-2xl leading-tight font-light text-marine-950 transition-colors duration-300 group-hover:text-terra-500 md:text-3xl">
                         {item.name}
                       </h3>
@@ -262,7 +300,7 @@ export default function CartePage() {
         {/* Background image with overlay */}
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=80"
+            src={restaurant.images.terrace.src}
             alt=""
             className="h-full w-full object-cover opacity-30"
           />
