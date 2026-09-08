@@ -132,13 +132,13 @@ export const reservationHref =
 
 /* ---- Navigation -------------------------------------------- */
 export const navItems = [
-  { label: "Accueil", href: "/#accueil" },
-  { label: "L'expérience", href: "/#experience" },
-  { label: "La cuisine", href: "/#cuisine" },
-  { label: "La carte", href: "/carte" },
-  { label: "Galerie", href: "/#galerie" },
-  { label: "Le restaurant", href: "/#restaurant" },
-  { label: "Contact", href: "/#contact" },
+  { label: "Accueil", href: "#accueil" },
+  { label: "L'expérience", href: "#experience" },
+  { label: "La cuisine", href: "#cuisine" },
+  { label: "La carte", href: "https://wiicmenu-qrcode.com/app/index.php?r=3557&c=67925", external: true },
+  { label: "Galerie", href: "#galerie" },
+  { label: "Le restaurant", href: "#restaurant" },
+  { label: "Contact", href: "#contact" },
 ] as const;
 
 /* ---- L'expérience : « Entre Terre & Mer » ------------------- */

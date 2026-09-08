@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { navItems, restaurant } from "../data/restaurant";
 import {
   ActionLink,
@@ -77,8 +76,8 @@ export default function Footer() {
             </p>
             <ul className="mt-6 space-y-3">
               {navItems.map((item) => {
-                const isSection = item.href.startsWith("/#");
-                const isPage = item.href === "/carte";
+                const isExternal = "external" in item && item.external;
+                const isSection = !isExternal && item.href.startsWith("#");
                 
                 const linkContent = (
                   <>
@@ -91,31 +90,40 @@ export default function Footer() {
                 );
                 const linkClass = "group inline-flex items-center gap-2 text-sm text-marine-200 transition-all duration-300 hover:translate-x-1 hover:text-ivory-50";
 
-                if (isPage) {
-                  // Lien vers une page (/carte)
+                if (isExternal) {
+                  // Lien externe (WiicMenu)
                   return (
                     <li key={item.href}>
-                      <Link to={item.href} className={linkClass}>
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={linkClass}
+                      >
                         {linkContent}
-                      </Link>
+                      </a>
                     </li>
                   );
                 }
 
                 if (isSection) {
                   // Lien vers une section de la homepage
+                  const sectionId = item.href.replace("#", "");
                   return (
                     <li key={item.href}>
-                      <Link 
-                        to="/" 
+                      <a
+                        href={item.href}
                         className={linkClass}
                         onClick={(e) => {
                           e.preventDefault();
-                          window.location.href = item.href;
+                          const element = document.getElementById(sectionId);
+                          if (element) {
+                            element.scrollIntoView({ behavior: "smooth" });
+                          }
                         }}
                       >
                         {linkContent}
-                      </Link>
+                      </a>
                     </li>
                   );
                 }

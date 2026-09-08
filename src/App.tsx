@@ -1,4 +1,3 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { reservationHref, restaurant } from "./data/restaurant";
 import Nav from "./components/Nav";
@@ -12,8 +11,6 @@ import RestaurantSection from "./components/RestaurantSection";
 import ReviewsSection from "./components/ReviewsSection";
 import ReservationSection from "./components/ReservationSection";
 import Footer from "./components/Footer";
-import CartePage from "./components/CartePage";
-import SeoHead from "./components/SeoHead";
 import { PhoneIcon } from "./components/ui";
 
 function HomePage() {
@@ -90,17 +87,11 @@ function MobileCta() {
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <SeoHead />
-      <div className="min-h-screen bg-ivory-50 text-marine-900">
-        {/* Grain ambiant */}
-        <div className="noise-overlay" aria-hidden="true" />
+    <div className="min-h-screen bg-ivory-50 text-marine-900">
+      {/* Grain ambiant */}
+      <div className="noise-overlay" aria-hidden="true" />
 
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/carte" element={<CartePage />} />
-        </Routes>
-      </div>
-    </BrowserRouter>
+      <HomePage />
+    </div>
   );
 }
