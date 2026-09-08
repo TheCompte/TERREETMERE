@@ -1,5 +1,6 @@
 import { restaurant } from "../data/restaurant";
 import { ActionLink, ArrowRightIcon, Overline, PhoneIcon, Reveal } from "./ui";
+import ReservationForm from "./ReservationForm";
 
 export default function ReservationSection() {
   return (
@@ -57,30 +58,38 @@ export default function ReservationSection() {
               </a>
             </Reveal>
 
-            <Reveal delay={320} className="mt-12 flex flex-wrap items-center gap-5">
-              <ActionLink
-                url={restaurant.links.reservationUrl}
-                className="group inline-flex items-center gap-3 bg-champagne-400 px-9 py-4.5 text-xs font-bold uppercase tracking-[0.26em] text-marine-950 transition-colors duration-300 hover:bg-champagne-300"
-                noticeClassName="text-marine-200"
-              >
-                Réserver une table
-                <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />
-              </ActionLink>
-              <a
-                href={restaurant.phone.href}
-                className="inline-flex items-center gap-3 border border-ivory-50/35 px-8 py-4.5 text-xs font-bold uppercase tracking-[0.26em] text-ivory-50 transition-colors duration-300 hover:border-champagne-300 hover:text-champagne-300"
-              >
-                <PhoneIcon className="h-4 w-4" />
-                Appeler
-              </a>
-            </Reveal>
+            {/* Formulaire de réservation ou lien externe */}
+            {restaurant.reservation.enabled && !restaurant.links.reservationUrl ? (
+              <Reveal delay={320} className="mt-12">
+                <ReservationForm />
+              </Reveal>
+            ) : (
+              <Reveal delay={320} className="mt-12 flex flex-wrap items-center gap-5">
+                <ActionLink
+                  url={restaurant.links.reservationUrl}
+                  className="group inline-flex items-center gap-3 bg-champagne-400 px-9 py-4.5 text-xs font-bold uppercase tracking-[0.26em] text-marine-950 transition-colors duration-300 hover:bg-champagne-300"
+                  noticeClassName="text-marine-200"
+                >
+                  Réserver une table
+                  <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />
+                </ActionLink>
+                <a
+                  href={restaurant.phone.href}
+                  className="inline-flex items-center gap-3 border border-ivory-50/35 px-8 py-4.5 text-xs font-bold uppercase tracking-[0.26em] text-ivory-50 transition-colors duration-300 hover:border-champagne-300 hover:text-champagne-300"
+                >
+                  <PhoneIcon className="h-4 w-4" />
+                  Appeler
+                </a>
+              </Reveal>
+            )}
 
             <Reveal delay={380}>
               <p className="mt-12 max-w-md border-t border-ivory-50/12 pt-6 text-sm leading-relaxed text-marine-300">
                 {restaurant.address.street}, {restaurant.address.zip}{" "}
-                {restaurant.address.city} — au cœur du Vieux-Port. La
-                réservation en ligne sera proposée ici dès l'ouverture du
-                module ; le téléphone reste le chemin le plus court.
+                {restaurant.address.city} — au cœur du Vieux-Port.
+                {restaurant.reservation.enabled && !restaurant.links.reservationUrl
+                  ? " Réservez directement en ligne ou appelez-nous."
+                  : " La réservation en ligne sera proposée ici dès l'ouverture du module ; le téléphone reste le chemin le plus court."}
               </p>
             </Reveal>
           </div>

@@ -41,10 +41,34 @@ export const restaurant = {
     /** URL officielle de la carte — pilote le bouton « Voir la carte » */
     menuUrl:
       "https://wiicmenu-qrcode.com/app/index.php?r=3557&c=67925",
-    /** UNIQUE valeur pilotant TOUS les boutons « Réserver » du site */
+    /** URL officielle du système de réservation externe (vide = formulaire interne) */
     reservationUrl: "",
     /** URL officielle de la page des avis Google */
     googleReviewsUrl: "",
+  },
+
+  /* ---- Système de réservation --------------------------------
+     enabled : active/désactive le formulaire de réservation
+     mode : "demo" (simulation locale) ou "live" (vrai backend)
+     times : créneaux horaires disponibles (modifiable facilement)
+     maxGuests : nombre maximum de convives autorisés
+     Quand reservationUrl est renseignée, le bouton "Réserver"
+     redirige vers cette URL externe au lieu du formulaire interne. */
+  reservation: {
+    enabled: true,
+    mode: "demo" as const,
+    times: [
+      "12:00",
+      "12:30",
+      "13:00",
+      "13:30",
+      "19:00",
+      "19:30",
+      "20:00",
+      "20:30",
+      "21:00",
+    ],
+    maxGuests: 12,
   },
 
   /** Itinéraire Google Maps — bouton « Itinéraire » */
