@@ -176,7 +176,7 @@ export default function RestaurantSection() {
                   </a>
                   <p className="mt-3 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-marine-600">
                     <StarIcon className="h-3.5 w-3.5 text-champagne-500" />
-                    4,9 / 5 · 96 avis Google
+                    4,9 / 5 · 99 avis Google
                   </p>
                 </div>
               </Reveal>

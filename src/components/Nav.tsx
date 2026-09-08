@@ -189,7 +189,7 @@ export default function Nav() {
             </a>
             <span className="inline-flex items-center gap-2">
               <StarIcon className="h-4 w-4 text-champagne-400" />
-              4,9 / 5 · 96 avis Google
+              4,9 / 5 · 99 avis Google
             </span>
           </div>
         </nav>

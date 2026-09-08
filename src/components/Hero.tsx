@@ -98,7 +98,7 @@ export default function Hero() {
           className="inline-flex items-center gap-2.5 border border-ivory-50/25 bg-marine-950/45 px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-ivory-50/90 transition-colors duration-300 hover:border-champagne-300/70 hover:text-champagne-300"
         >
           <StarIcon className="h-3.5 w-3.5 text-champagne-300" />
-          4,9 / 5 — 96 avis Google
+          4,9 / 5 — 99 avis Google
         </a>
       </div>
     </section>
