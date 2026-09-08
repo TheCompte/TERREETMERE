@@ -27,7 +27,7 @@ export const restaurant = {
 
   rating: {
     value: 4.9,
-    count: 96,
+    count: 99,
     source: "Google",
   },
 

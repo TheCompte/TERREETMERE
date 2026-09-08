@@ -65,7 +65,7 @@ export default function Footer() {
             </a>
             <p className="mt-4 inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-marine-300">
               <StarIcon className="h-3.5 w-3.5 text-champagne-400" />
-              4,9 / 5 · 96 avis Google
+              4,9 / 5 · 99 avis Google
             </p>
           </div>
 
