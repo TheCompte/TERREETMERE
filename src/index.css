@@ -1,0 +1,302 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-sans: "Archivo", "Helvetica Neue", "Segoe UI", sans-serif;
+
+  /* Profondeurs marines */
+  --color-marine-950: #08141c;
+  --color-marine-900: #0f2029;
+  --color-marine-850: #122836;
+  --color-marine-800: #173242;
+  --color-marine-700: #21485c;
+  --color-marine-600: #2e5a72;
+  --color-marine-500: #48718a;
+  --color-marine-300: #8fadb9;
+  --color-marine-200: #b9cdd4;
+
+  /* Ivoires & sables */
+  --color-ivory-50: #faf6ec;
+  --color-ivory-100: #f4edda;
+  --color-ivory-200: #ece1c8;
+  --color-sand-300: #dccfae;
+  --color-sand-400: #c9b88f;
+
+  /* Accents naturels */
+  --color-olive-500: #7c7a52;
+  --color-olive-400: #96945f;
+  --color-terra-600: #a8502e;
+  --color-terra-500: #b95c36;
+  --color-terra-400: #ce7350;
+
+  /* Or chaud discret */
+  --color-champagne-300: #e2c88e;
+  --color-champagne-400: #d6b678;
+  --color-champagne-500: #c2a15c;
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+
+body {
+  background-color: var(--color-ivory-50);
+  color: var(--color-marine-900);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: var(--color-champagne-400);
+  color: var(--color-marine-950);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-champagne-400);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   Grain / matière
+   ============================================================ */
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   Révélations au scroll
+   ============================================================ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 1s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 1s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Titre du hero : lignes masquées qui montent */
+.line-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.line-mask > span {
+  display: block;
+  transform: translateY(115%);
+  animation: line-up 1.15s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+@keyframes line-up {
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Respiration lente des images */
+.kenburns {
+  animation: kenburns 11s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  will-change: transform;
+}
+
+@keyframes kenburns {
+  from {
+    transform: scale(1.14) translate(1.6%, -1.2%);
+  }
+  to {
+    transform: scale(1.02) translate(0, 0);
+  }
+}
+
+.img-breathe img {
+  transition: transform 1.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.img-breathe:hover img {
+  transform: scale(1.055);
+}
+
+/* ============================================================
+   Ligne de marée (SVG)
+   ============================================================ */
+
+.tide-path {
+  stroke-dasharray: 900;
+  stroke-dashoffset: 900;
+}
+
+.is-in .tide-path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 2.4s cubic-bezier(0.22, 0.61, 0.36, 1) 0.25s;
+}
+
+/* ============================================================
+   Défilement horizontal (bandeau mots)
+   ============================================================ */
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ============================================================
+   Divers vivant
+   ============================================================ */
+
+@keyframes pulse-pin {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+.pin-pulse {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: pulse-pin 2.4s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(9px);
+  }
+}
+
+.float-y {
+  animation: float-y 2.6s ease-in-out infinite;
+}
+
+@keyframes notice-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.notice-in {
+  animation: notice-in 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes drawer-link {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.drawer-link {
+  opacity: 0;
+  animation: drawer-link 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+/* Étoiles de notation */
+.stars-fill {
+  transition: width 1.6s cubic-bezier(0.22, 0.61, 0.36, 1) 0.3s;
+}
+
+/* Scrollbar discret */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-ivory-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-marine-700);
+  border-radius: 8px;
+}
+
+/* ============================================================
+   Accessibilité : mouvement réduit
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .line-mask > span {
+    animation: none;
+    transform: none;
+  }
+
+  .kenburns,
+  .marquee-track,
+  .pin-pulse,
+  .float-y,
+  .drawer-link,
+  .notice-in {
+    animation: none;
+  }
+
+  .drawer-link {
+    opacity: 1;
+  }
+
+  .tide-path {
+    stroke-dashoffset: 0;
+  }
+
+  .img-breathe:hover img {
+    transform: none;
+  }
+
+  .stars-fill {
+    transition: none;
+  }
+}
