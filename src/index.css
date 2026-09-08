@@ -300,3 +300,16 @@ body {
     transition: none;
   }
 }
+
+/* ============================================================
+   Cacher la scrollbar pour la navigation par catégorie
+   ============================================================ */
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

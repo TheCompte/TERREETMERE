@@ -77,7 +77,9 @@ export default function Footer() {
             </p>
             <ul className="mt-6 space-y-3">
               {navItems.map((item) => {
-                const isExternal = item.href.startsWith("/");
+                const isSection = item.href.startsWith("/#");
+                const isPage = item.href === "/carte";
+                
                 const linkContent = (
                   <>
                     <span
@@ -89,7 +91,8 @@ export default function Footer() {
                 );
                 const linkClass = "group inline-flex items-center gap-2 text-sm text-marine-200 transition-all duration-300 hover:translate-x-1 hover:text-ivory-50";
 
-                if (isExternal) {
+                if (isPage) {
+                  // Lien vers une page (/carte)
                   return (
                     <li key={item.href}>
                       <Link to={item.href} className={linkClass}>
@@ -99,13 +102,25 @@ export default function Footer() {
                   );
                 }
 
-                return (
-                  <li key={item.href}>
-                    <a href={item.href} className={linkClass}>
-                      {linkContent}
-                    </a>
-                  </li>
-                );
+                if (isSection) {
+                  // Lien vers une section de la homepage
+                  return (
+                    <li key={item.href}>
+                      <Link 
+                        to="/" 
+                        className={linkClass}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          window.location.href = item.href;
+                        }}
+                      >
+                        {linkContent}
+                      </Link>
+                    </li>
+                  );
+                }
+
+                return null;
               })}
             </ul>
           </nav>

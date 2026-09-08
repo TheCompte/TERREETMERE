@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { reservationHref, restaurant } from "../data/restaurant";
 import { menuData, type MenuItem } from "../data/menu";
@@ -9,6 +9,43 @@ import Nav from "./Nav";
 
 export default function CartePage() {
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+
+  // Scroll to category when clicking on category nav
+  const scrollToCategory = (categoryId: string) => {
+    const element = document.getElementById(categoryId);
+    if (element) {
+      const offset = 100; // Account for fixed header
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  };
+
+  // Track active category on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 150;
+      
+      for (const category of menuData) {
+        const element = document.getElementById(category.id);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveCategory(category.id);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div className="min-h-screen bg-ivory-50 text-marine-900">
@@ -52,52 +89,79 @@ export default function CartePage() {
         </div>
       </section>
 
-      {/* Liste des plats — composition asymétrique */}
-      <section className="bg-ivory-50 py-20 md:py-28">
+      {/* Navigation par catégorie */}
+      <nav className="sticky top-[72px] z-30 border-b border-marine-900/10 bg-ivory-50/95 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-5 md:px-8">
-          {menuData.map((category) => (
-            <div key={category.id}>
-              <Reveal>
-                <div className="mb-12 flex items-baseline gap-5 md:mb-16">
-                  <span className="font-display text-sm italic text-terra-500">
-                    01
-                  </span>
-                  <h2 className="font-display text-3xl font-light tracking-wide text-marine-950 md:text-4xl">
-                    {category.name}
-                  </h2>
-                  <span
-                    aria-hidden="true"
-                    className="h-px flex-1 bg-marine-900/15"
-                  />
-                </div>
-              </Reveal>
+          <div className="flex gap-6 overflow-x-auto py-4 scrollbar-hide">
+            {menuData.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => scrollToCategory(category.id)}
+                className={`whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.2em] transition-colors ${
+                  activeCategory === category.id
+                    ? "text-terra-500"
+                    : "text-marine-800 hover:text-terra-500"
+                }`}
+              >
+                {category.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      </nav>
 
-              <div className="grid gap-16 md:gap-20 lg:grid-cols-12">
-                {category.items.map((item, i) => {
-                  // Composition asymétrique : alternance de tailles
-                  const isLarge = i % 3 === 0;
-                  const isOffset = i % 3 === 1;
+      {/* Contenu de la carte */}
+      <main className="mx-auto max-w-7xl px-5 py-16 md:px-8 md:py-24">
+        {menuData.map((category, categoryIndex) => (
+          <section
+            key={category.id}
+            id={category.id}
+            className="mb-24 last:mb-0"
+          >
+            {/* En-tête de catégorie */}
+            <Reveal>
+              <div className="mb-12 flex items-baseline gap-5 md:mb-16">
+                <span className="font-display text-sm italic text-terra-500">
+                  0{categoryIndex + 1}
+                </span>
+                <h2 className="font-display text-3xl font-light tracking-wide text-marine-950 md:text-4xl">
+                  {category.name}
+                </h2>
+                <span
+                  aria-hidden="true"
+                  className="h-px flex-1 bg-marine-900/15"
+                />
+              </div>
+            </Reveal>
 
-                  return (
-                    <Reveal
-                      key={item.id}
-                      delay={i * 80}
-                      className={`group cursor-pointer ${
-                        isLarge
-                          ? "lg:col-span-8"
-                          : isOffset
-                            ? "lg:col-span-7 lg:col-start-5"
-                            : "lg:col-span-7 lg:col-start-3"
-                      }`}
+            {/* Grille de plats - composition asymétrique */}
+            <div className="grid gap-12 md:gap-16 lg:grid-cols-12">
+              {category.items.map((item, itemIndex) => {
+                // Composition asymétrique : alternance de tailles et positions
+                const isLarge = itemIndex % 3 === 0;
+                const isOffset = itemIndex % 3 === 1;
+                
+                const colSpan = isLarge
+                  ? "lg:col-span-8"
+                  : isOffset
+                    ? "lg:col-span-7 lg:col-start-5"
+                    : "lg:col-span-7 lg:col-start-3";
+
+                return (
+                  <Reveal
+                    key={item.id}
+                    delay={itemIndex * 80}
+                    className={`group ${colSpan}`}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setSelectedItem(item)}
+                      className="block w-full text-left"
+                      aria-label={`Voir le détail : ${item.name}`}
                     >
-                      <button
-                        type="button"
-                        onClick={() => setSelectedItem(item)}
-                        className="block w-full text-left"
-                        aria-label={`Voir le détail : ${item.name}`}
-                      >
-                        {/* Image */}
-                        <div className="img-breathe relative overflow-hidden bg-marine-900">
+                      {/* Image (si disponible) */}
+                      {item.image && (
+                        <div className="img-breathe relative mb-5 overflow-hidden bg-marine-900">
                           <img
                             src={item.image}
                             alt={item.name}
@@ -107,34 +171,50 @@ export default function CartePage() {
                             }`}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-marine-950/40 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-
+                          
                           {/* Numéro */}
                           <span className="absolute top-5 left-5 font-display text-sm italic text-ivory-50/0 transition-all duration-500 group-hover:text-ivory-50/90">
-                            0{i + 1}
+                            0{itemIndex + 1}
                           </span>
                         </div>
+                      )}
 
-                        {/* Infos */}
-                        <div className="mt-5 flex items-start justify-between gap-6 md:mt-6">
+                      {/* Infos du plat */}
+                      <div className="flex items-start justify-between gap-6">
+                        <div className="flex-1">
                           <h3 className="font-display text-xl leading-snug font-light text-marine-950 transition-colors duration-300 group-hover:text-terra-500 md:text-2xl">
                             {item.name}
                           </h3>
-                          <span className="shrink-0 font-display text-xl font-light text-marine-900 md:text-2xl">
-                            {item.price.toFixed(2).replace(".", ",")} €
-                          </span>
+                          {item.description && (
+                            <p className="mt-2 text-sm leading-relaxed text-marine-800/80 md:text-base">
+                              {item.description}
+                            </p>
+                          )}
                         </div>
+                        <span className="shrink-0 font-display text-xl font-light text-marine-900 md:text-2xl">
+                          {item.price.toFixed(2).replace(".", ",")} €
+                        </span>
+                      </div>
 
-                        {/* Ligne fine */}
-                        <span className="mt-3 block h-px w-0 bg-terra-500/60 transition-all duration-500 group-hover:w-full" />
-                      </button>
-                    </Reveal>
-                  );
-                })}
-              </div>
+                      {/* Ligne fine */}
+                      <span className="mt-3 block h-px w-0 bg-terra-500/60 transition-all duration-500 group-hover:w-full" />
+                    </button>
+                  </Reveal>
+                );
+              })}
             </div>
-          ))}
-        </div>
-      </section>
+
+            {/* Note pour la catégorie viandes */}
+            {category.id === "meats" && (
+              <Reveal delay={200}>
+                <p className="mt-8 font-display text-sm italic text-marine-700/80">
+                  Accompagnements : frites maison, salade, légumes, pâtes ou riz noir.
+                </p>
+              </Reveal>
+            )}
+          </section>
+        ))}
+      </main>
 
       {/* Note de fin */}
       <section className="bg-ivory-100 py-20 md:py-24">
