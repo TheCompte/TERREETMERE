@@ -51,7 +51,6 @@ export default function ReviewsSection() {
                 <ActionLink
                   url={restaurant.links.googleReviewsUrl}
                   className="group inline-flex items-center gap-3 border border-marine-900/30 px-8 py-4 text-xs font-bold uppercase tracking-[0.24em] text-marine-900 transition-colors duration-300 hover:border-marine-900 hover:bg-marine-900 hover:text-ivory-50"
-                  noticeClassName="text-marine-800"
                 >
                   Lire les avis Google
                   <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />

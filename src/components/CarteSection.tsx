@@ -81,7 +81,6 @@ export default function CarteSection() {
               <ActionLink
                 url={restaurant.links.menuUrl}
                 className="group inline-flex items-center gap-3 bg-champagne-400 px-9 py-4.5 text-xs font-bold uppercase tracking-[0.26em] text-marine-950 transition-colors duration-300 hover:bg-champagne-300"
-                noticeClassName="text-marine-200"
               >
                 Voir la carte
                 <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />
