@@ -71,16 +71,14 @@ export default function CartePage() {
           </div>
         </Reveal>
 
-        {/* Editorial Layout - Mix of featured and standard items */}
-        <div className="space-y-20 md:space-y-32">
+        {/* Clean Grid Layout - Image | Content | Price */}
+        <div className="space-y-8">
           {items.map((item, itemIndex) => {
-            // First item in each category gets featured treatment
+            // First item gets featured treatment
             const isFeatured = itemIndex === 0;
-            // Every 3rd item gets a different layout
-            const isAlternate = itemIndex % 3 === 1;
             
             if (isFeatured) {
-              // Featured dish - large, cinematic (with image if available)
+              // Featured dish - large, cinematic
               return (
                 <Reveal key={item.id} delay={itemIndex * 100}>
                   <button
@@ -89,76 +87,49 @@ export default function CartePage() {
                     className="group block w-full text-left"
                     aria-label={`Voir le détail : ${item.name}`}
                   >
-                    {item.image ? (
-                      // Layout with image
-                      <div className="grid gap-8 md:grid-cols-12 md:gap-12 lg:gap-16">
-                        {/* Large image */}
-                        <div className="md:col-span-7 lg:col-span-8">
-                          <div className="img-breathe relative overflow-hidden bg-marine-900">
+                    <div className="grid gap-8 md:grid-cols-12 md:gap-12">
+                      {/* Large Image */}
+                      <div className="md:col-span-7">
+                        <div className="relative overflow-hidden rounded-lg bg-marine-100 shadow-sm transition-shadow duration-300 group-hover:shadow-lg">
+                          {item.image ? (
                             <img
                               src={item.image}
                               alt={item.name}
                               loading="lazy"
                               className="aspect-[16/10] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-marine-950/60 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                            
-                            {/* Featured badge */}
-                            <div className="absolute top-6 left-6">
-                              <span className="inline-block bg-champagne-400/95 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.3em] text-marine-950 backdrop-blur-sm">
-                                Signature
+                          ) : (
+                            <div className="flex aspect-[16/10] w-full items-center justify-center bg-gradient-to-br from-marine-100 to-marine-200">
+                              <span className="font-display text-6xl font-light italic text-champagne-400/30">
+                                &amp;
                               </span>
                             </div>
-                          </div>
-                        </div>
-                        
-                        {/* Content */}
-                        <div className="flex flex-col justify-center md:col-span-5 lg:col-span-4">
-                          <h3 className="font-display text-3xl leading-tight font-light text-marine-950 transition-colors duration-300 group-hover:text-terra-500 md:text-4xl lg:text-5xl">
-                            {item.name}
-                          </h3>
-                          
-                          {item.description && (
-                            <p className="mt-6 text-base leading-relaxed text-marine-800/85 md:text-lg">
-                              {item.description}
-                            </p>
                           )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-marine-950/40 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                           
-                          <div className="mt-8 flex items-baseline gap-4">
-                            <span className="font-display text-4xl font-light text-marine-900 md:text-5xl">
-                              {item.price.toFixed(2).replace(".", ",")}
+                          {/* Featured badge */}
+                          <div className="absolute top-6 left-6">
+                            <span className="inline-block bg-champagne-400/95 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.3em] text-marine-950 backdrop-blur-sm">
+                              Signature
                             </span>
-                            <span className="text-xl text-marine-700">€</span>
-                          </div>
-                          
-                          <div className="mt-6 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-terra-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                            <span>Voir le détail</span>
-                            <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                           </div>
                         </div>
                       </div>
-                    ) : (
-                      // Layout without image - elegant text presentation
-                      <div className="relative border-l-2 border-champagne-400/40 pl-8 md:pl-12">
-                        {/* Featured badge */}
-                        <div className="mb-6">
-                          <span className="inline-block bg-champagne-400/20 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.3em] text-champagne-500">
-                            Signature
-                          </span>
-                        </div>
-                        
-                        <h3 className="font-display text-3xl leading-tight font-light text-marine-950 transition-colors duration-300 group-hover:text-terra-500 md:text-4xl lg:text-5xl">
+                      
+                      {/* Content */}
+                      <div className="flex flex-col justify-center md:col-span-5">
+                        <h3 className="font-display text-3xl leading-tight font-light text-marine-950 transition-colors duration-300 group-hover:text-terra-500 md:text-4xl">
                           {item.name}
                         </h3>
                         
                         {item.description && (
-                          <p className="mt-6 max-w-2xl text-base leading-relaxed text-marine-800/85 md:text-lg">
+                          <p className="mt-4 text-base leading-relaxed text-marine-800/85">
                             {item.description}
                           </p>
                         )}
                         
-                        <div className="mt-8 flex items-baseline gap-4">
-                          <span className="font-display text-4xl font-light text-marine-900 md:text-5xl">
+                        <div className="mt-6 flex items-baseline gap-3">
+                          <span className="font-display text-4xl font-light text-marine-900">
                             {item.price.toFixed(2).replace(".", ",")}
                           </span>
                           <span className="text-xl text-marine-700">€</span>
@@ -169,14 +140,13 @@ export default function CartePage() {
                           <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                         </div>
                       </div>
-                    )}
+                    </div>
                   </button>
                 </Reveal>
               );
             }
-            
-            if (isAlternate) {
-            // Alternate layout - image on right (if available)
+
+            // Standard dish - clean grid: Image | Content | Price
             return (
               <Reveal key={item.id} delay={itemIndex * 100}>
                 <button
@@ -185,87 +155,46 @@ export default function CartePage() {
                   className="group block w-full text-left"
                   aria-label={`Voir le détail : ${item.name}`}
                 >
-                  <div className={`gap-8 md:grid md:grid-cols-12 md:gap-12 ${item.image ? '' : 'flex flex-col'}`}>
-                    {/* Content */}
-                    <div className={`flex flex-col justify-center ${item.image ? 'md:col-span-5 md:col-start-1' : ''}`}>
-                      <h3 className="font-display text-2xl leading-tight font-light text-marine-950 transition-colors duration-300 group-hover:text-terra-500 md:text-3xl">
-                        {item.name}
-                      </h3>
-                      
-                      {item.description && (
-                        <p className="mt-4 text-sm leading-relaxed text-marine-800/85 md:text-base">
-                          {item.description}
-                        </p>
-                      )}
-                      
-                      <div className="mt-6 flex items-baseline gap-3">
-                        <span className="font-display text-3xl font-light text-marine-900 md:text-4xl">
-                          {item.price.toFixed(2).replace(".", ",")}
-                        </span>
-                        <span className="text-lg text-marine-700">€</span>
+                  <div className="grid items-center gap-6 rounded-lg border border-marine-900/5 bg-white p-6 transition-all duration-300 hover:border-champagne-400/30 hover:shadow-md md:grid-cols-[200px_1fr_auto] md:gap-8 md:p-8">
+                    {/* Image */}
+                    <div className="shrink-0">
+                      <div className="relative overflow-hidden rounded-lg bg-marine-100">
+                        {item.image ? (
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            loading="lazy"
+                            className="aspect-square w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+                          />
+                        ) : (
+                          <div className="flex aspect-square w-full items-center justify-center bg-gradient-to-br from-marine-100 to-marine-200">
+                            <span className="font-display text-3xl font-light italic text-champagne-400/30">
+                              &amp;
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
                     
-                    {/* Image - right (only if available) */}
-                    {item.image && (
-                      <div className="md:col-span-6 md:col-start-7">
-                        <div className="img-breathe relative overflow-hidden bg-marine-900">
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            loading="lazy"
-                            className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </button>
-              </Reveal>
-            );            }
-            
-            // Standard layout - compact, elegant (image on left if available)
-            return (
-              <Reveal key={item.id} delay={itemIndex * 100}>
-                <button
-                  type="button"
-                  onClick={() => setSelectedItem(item)}
-                  className="group block w-full text-left"
-                  aria-label={`Voir le détail : ${item.name}`}
-                >
-                  <div className={`gap-8 md:grid md:grid-cols-12 md:gap-12 ${item.image ? '' : 'flex flex-col-reverse'}`}>
-                    {/* Image - left (only if available) */}
-                    {item.image && (
-                      <div className="md:col-span-5">
-                        <div className="img-breathe relative overflow-hidden bg-marine-900">
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            loading="lazy"
-                            className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                          />
-                        </div>
-                      </div>
-                    )}
-                    
-                    {/* Content - right */}
-                    <div className={`flex flex-col justify-center ${item.image ? 'md:col-span-6 md:col-start-7' : ''}`}>
-                      <h3 className="font-display text-2xl leading-tight font-light text-marine-950 transition-colors duration-300 group-hover:text-terra-500 md:text-3xl">
+                    {/* Content */}
+                    <div className="flex flex-col justify-center">
+                      <h3 className="font-display text-xl leading-tight font-light text-marine-950 transition-colors duration-300 group-hover:text-terra-500 md:text-2xl">
                         {item.name}
                       </h3>
                       
                       {item.description && (
-                        <p className="mt-4 text-sm leading-relaxed text-marine-800/85 md:text-base">
+                        <p className="mt-2 text-sm leading-relaxed text-marine-800/75">
                           {item.description}
                         </p>
                       )}
-                      
-                      <div className="mt-6 flex items-baseline gap-3">
-                        <span className="font-display text-3xl font-light text-marine-900 md:text-4xl">
-                          {item.price.toFixed(2).replace(".", ",")}
-                        </span>
-                        <span className="text-lg text-marine-700">€</span>
-                      </div>
+                    </div>
+                    
+                    {/* Price */}
+                    <div className="flex items-baseline gap-2 md:flex-col md:items-end md:gap-1">
+                      <span className="font-display text-2xl font-light text-marine-900 md:text-3xl">
+                        {item.price.toFixed(2).replace(".", ",")}
+                      </span>
+                      <span className="text-base text-marine-700">€</span>
                     </div>
                   </div>
                 </button>
