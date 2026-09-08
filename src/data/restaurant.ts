@@ -40,7 +40,7 @@ export const restaurant = {
   links: {
     /** URL officielle de la carte — pilote le bouton « Voir la carte » */
     menuUrl:
-      "https://wiicmenu-qrcode.com/app/index.php?r=3557&c=67925",
+      "https://wiicmenu-qrcode.com/app/offre.php?r=3557&_gl=1*765zx1*_up*MQ..*_ga*MTA2NTI3OTMyMS4xNzg4OTA3NzM4*_ga_G8PBVQKW09*czE3ODg5MDc3MzgkbzEkZzAkdDE3ODg5MDc3MzgkajYwJGwwJGg0NjgwMTcyMTc.",
     /** URL officielle du système de réservation externe (vide = formulaire interne) */
     reservationUrl: "",
     /** URL officielle de la page des avis Google */
@@ -135,7 +135,7 @@ export const navItems = [
   { label: "Accueil", href: "#accueil" },
   { label: "L'expérience", href: "#experience" },
   { label: "La cuisine", href: "#cuisine" },
-  { label: "La carte", href: "https://wiicmenu-qrcode.com/app/index.php?r=3557&c=67925", external: true },
+  { label: "La carte", href: "https://wiicmenu-qrcode.com/app/offre.php?r=3557&_gl=1*765zx1*_up*MQ..*_ga*MTA2NTI3OTMyMS4xNzg4OTA3NzM4*_ga_G8PBVQKW09*czE3ODg5MDc3MzgkbzEkZzAkdDE3ODg5MDc3MzgkajYwJGwwJGg0NjgwMTcyMTc.", external: true },
   { label: "Galerie", href: "#galerie" },
   { label: "Le restaurant", href: "#restaurant" },
   { label: "Contact", href: "#contact" },
