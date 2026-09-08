@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
 import { navItems, reservationHref, restaurant } from "../data/restaurant";
 import {
   BurgerIcon,
@@ -14,7 +13,6 @@ export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("#accueil");
-  const location = useLocation();
 
   useBodyLock(open);
 
@@ -28,10 +26,9 @@ export default function Nav() {
 
   /* Section active (scroll-spy) */
   useEffect(() => {
-    // Extraire les IDs des sections depuis les liens de navigation
     const ids = navItems
-      .filter((n) => n.href.startsWith("/#"))
-      .map((n) => n.href.replace("/#", ""));
+      .filter((n) => !("external" in n) && n.href.startsWith("#"))
+      .map((n) => n.href.replace("#", ""));
     
     const sections = ids
       .map((id) => document.getElementById(id))
@@ -73,8 +70,8 @@ export default function Nav() {
       >
         <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 md:px-8">
           {/* Logo */}
-          <Link
-            to="/"
+          <a
+            href="#accueil"
             className={`transition-colors duration-300 ${
               light ? "text-ivory-50" : "text-marine-900"
             }`}
@@ -85,20 +82,14 @@ export default function Nav() {
               className="text-lg md:text-xl"
               ampClassName={light ? "text-champagne-300" : "text-terra-500"}
             />
-          </Link>
+          </a>
 
           {/* Navigation desktop */}
           <nav className="hidden items-center gap-7 lg:flex" aria-label="Navigation principale">
             {navItems.map((item) => {
-              const isSection = item.href.startsWith("/#");
-              const isPage = item.href === "/carte";
-              
-              // Déterminer si le lien est actif
-              const isActive = isPage
-                ? location.pathname === "/carte"
-                : isSection
-                  ? location.pathname === "/" && active === item.href.replace("/", "")
-                  : false;
+              const isExternal = "external" in item && item.external;
+              const isSection = !isExternal && item.href.startsWith("#");
+              const isActive = isSection && active === item.href;
 
               const className = `relative text-[11.5px] font-semibold uppercase tracking-[0.18em] transition-colors duration-300 after:absolute after:-bottom-1.5 after:left-0 after:h-px after:bg-current after:transition-all after:duration-300 ${
                 isActive ? "after:w-full" : "after:w-0 hover:after:w-full"
@@ -112,46 +103,39 @@ export default function Nav() {
                     : "text-marine-800 hover:text-marine-950"
               }`;
 
-              if (isPage) {
-                // Lien vers une page (/carte)
+              if (isExternal) {
                 return (
-                  <Link
+                  <a
                     key={item.href}
-                    to={item.href}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className={className}
                     onClick={() => setOpen(false)}
                   >
                     {item.label}
-                  </Link>
+                  </a>
                 );
               }
 
               if (isSection) {
-                // Lien vers une section de la homepage (/#accueil, /#experience, etc.)
-                const sectionId = item.href.replace("/#", "");
+                const sectionId = item.href.replace("#", "");
                 return (
-                  <Link
+                  <a
                     key={item.href}
-                    to="/"
+                    href={item.href}
                     className={className}
                     onClick={(e) => {
                       e.preventDefault();
                       setOpen(false);
-                      
-                      // Si on est déjà sur la homepage, scroll vers la section
-                      if (location.pathname === "/") {
-                        const element = document.getElementById(sectionId);
-                        if (element) {
-                          element.scrollIntoView({ behavior: "smooth" });
-                        }
-                      } else {
-                        // Si on est sur une autre page, naviguer vers la homepage avec le hash
-                        window.location.href = item.href;
+                      const element = document.getElementById(sectionId);
+                      if (element) {
+                        element.scrollIntoView({ behavior: "smooth" });
                       }
                     }}
                   >
                     {item.label}
-                  </Link>
+                  </a>
                 );
               }
 
@@ -201,15 +185,9 @@ export default function Nav() {
           aria-label="Navigation mobile"
         >
           {navItems.map((item, i) => {
-            const isSection = item.href.startsWith("/#");
-            const isPage = item.href === "/carte";
-            
-            // Déterminer si le lien est actif
-            const isActive = isPage
-              ? location.pathname === "/carte"
-              : isSection
-                ? location.pathname === "/" && active === item.href.replace("/", "")
-                : false;
+            const isExternal = "external" in item && item.external;
+            const isSection = !isExternal && item.href.startsWith("#");
+            const isActive = isSection && active === item.href;
 
             const className = `drawer-link group flex items-baseline gap-4 border-b border-ivory-50/10 py-3.5 ${
               isActive ? "text-champagne-300" : "text-ivory-50"
@@ -226,42 +204,35 @@ export default function Nav() {
               </>
             );
 
-            if (isPage) {
-              // Lien vers une page (/carte)
+            if (isExternal) {
               return (
-                <Link
+                <a
                   key={item.href}
-                  to={item.href}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => setOpen(false)}
                   tabIndex={open ? 0 : -1}
                   style={{ animationDelay: open ? `${0.08 + i * 0.06}s` : "0s" }}
                   className={className}
                 >
                   {content}
-                </Link>
+                </a>
               );
             }
 
             if (isSection) {
-              // Lien vers une section de la homepage (/#accueil, /#experience, etc.)
-              const sectionId = item.href.replace("/#", "");
+              const sectionId = item.href.replace("#", "");
               return (
-                <Link
+                <a
                   key={item.href}
-                  to="/"
+                  href={item.href}
                   onClick={(e) => {
                     e.preventDefault();
                     setOpen(false);
-                    
-                    // Si on est déjà sur la homepage, scroll vers la section
-                    if (location.pathname === "/") {
-                      const element = document.getElementById(sectionId);
-                      if (element) {
-                        element.scrollIntoView({ behavior: "smooth" });
-                      }
-                    } else {
-                      // Si on est sur une autre page, naviguer vers la homepage avec le hash
-                      window.location.href = item.href;
+                    const element = document.getElementById(sectionId);
+                    if (element) {
+                      element.scrollIntoView({ behavior: "smooth" });
                     }
                   }}
                   tabIndex={open ? 0 : -1}
@@ -269,7 +240,7 @@ export default function Nav() {
                   className={className}
                 >
                   {content}
-                </Link>
+                </a>
               );
             }
 
@@ -299,8 +270,8 @@ export default function Nav() {
               {restaurant.phone.display}
             </a>
             <span className="inline-flex items-center gap-2">
-              <StarIcon className="h-4 w-4 text-champagne-400" />
-              4,9 / 5 · 99 avis Google
+              <StarIcon className="h-3.5 w-3.5 text-champagne-400" />
+              4,9 / 5 · 99 avis
             </span>
           </div>
         </nav>
