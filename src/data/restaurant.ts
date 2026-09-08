@@ -44,7 +44,8 @@ export const restaurant = {
     /** URL officielle du système de réservation externe (vide = formulaire interne) */
     reservationUrl: "",
     /** URL officielle de la page des avis Google */
-    googleReviewsUrl: "",
+    googleReviewsUrl:
+      "https://www.google.com/search?sca_esv=f2d48d055a0c39d3&rlz=1C1GCEA_enFR1083FR1083&cs=0&sxsrf=APpeQnv7gtmXmDNRI_6ZduXLjW3xzrW55g:1788884035308&uds=AJ5uw1_a2D0D09lxm8gpKKOTUn4rDNZHtXVBFupfEJCN4bZnyvkKS986S-nhxPaS_fVj7rH3NBx0QFDuXzhP0OCqP_0494fVlJTrC6IIcoMzW-OnkCJZWd2XYD0ARYDWHMrZt0GC7LBZvFFJVCK-pMKAKZ6A9YKT7g&q=Terre+%26+mer+Avis&si=APenkKm7iecQ4G6P-TsbSMFKIQtv3EFIqRAFw-i8uEbk55Z-_zr0cXzfJxelz5pyMY4-J-S367TrhL12HkMCK7i7IGipf0JKa3SZKaqA9EhZZDpGMte5eoPP-R-LOhh0T-SnPnpimQAU&hl=fr-FR&sa=X&ved=2ahUKEwjt8N2rsN-WAxXAOPsDHRZHIOEQ_4MLegQIFhAO&biw=1920&bih=911&dpr=1",
   },
 
   /* ---- Système de réservation --------------------------------

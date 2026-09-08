@@ -112,7 +112,6 @@ export default function Footer() {
                 <ActionLink
                   url={restaurant.links.googleReviewsUrl}
                   className="text-marine-200 transition-colors hover:text-ivory-50"
-                  noticeClassName="text-marine-300 text-[13px]"
                 >
                   Avis Google
                 </ActionLink>
