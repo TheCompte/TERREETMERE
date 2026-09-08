@@ -39,7 +39,8 @@ export const restaurant = {
      Renseignez l'URL ici — rien d'autre à modifier.          */
   links: {
     /** URL officielle de la carte — pilote le bouton « Voir la carte » */
-    menuUrl: "",
+    menuUrl:
+      "https://wiicmenu-qrcode.com/app/index.php?r=3557&c=67925",
     /** UNIQUE valeur pilotant TOUS les boutons « Réserver » du site */
     reservationUrl: "",
     /** URL officielle de la page des avis Google */

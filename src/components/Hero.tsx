@@ -59,7 +59,9 @@ export default function Hero() {
             <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1.5" />
           </a>
           <a
-            href="#carte"
+            href={restaurant.links.menuUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             className="group inline-flex items-center gap-3 border-b border-ivory-50/40 pb-1.5 text-xs font-bold uppercase tracking-[0.24em] text-ivory-50 transition-colors duration-300 hover:border-champagne-300 hover:text-champagne-300"
           >
             Découvrir la carte

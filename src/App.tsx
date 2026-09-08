@@ -46,7 +46,7 @@ function MobileCta() {
       aria-hidden={!show}
     >
       <a
-        href={reserveHref}
+        href={reservationHref}
         tabIndex={show ? 0 : -1}
         className="flex-1 bg-champagne-400 py-4 text-center text-xs font-bold uppercase tracking-[0.24em] text-marine-950 shadow-[0_18px_45px_-12px_rgba(8,20,28,0.7)] transition-colors active:bg-champagne-300"
       >
