@@ -46,13 +46,26 @@ export default function MenuItemDetail({ item, onClose }: MenuItemDetailProps) {
 
         <div className="flex h-full flex-col overflow-y-auto md:flex-row">
           {/* Image */}
-          <div className="relative aspect-square w-full shrink-0 bg-marine-900 md:aspect-auto md:w-1/2">
-            <img
-              src={item.image}
-              alt={item.name}
-              className="h-full w-full object-cover"
-            />
-          </div>
+          {item.image ? (
+            <div className="relative aspect-square w-full shrink-0 bg-marine-900 md:aspect-auto md:w-1/2">
+              <img
+                src={item.image}
+                alt={item.name}
+                className="h-full w-full object-cover"
+              />
+            </div>
+          ) : (
+            <div className="relative flex aspect-square w-full shrink-0 items-center justify-center bg-marine-900 md:aspect-auto md:w-1/2">
+              <div className="text-center">
+                <p className="font-display text-6xl font-light italic text-champagne-400/30 md:text-8xl">
+                  &amp;
+                </p>
+                <p className="mt-4 text-xs font-semibold uppercase tracking-[0.3em] text-ivory-50/50">
+                  Photographie à venir
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Contenu */}
           <div className="flex flex-1 flex-col justify-center p-8 md:p-12 lg:p-16">

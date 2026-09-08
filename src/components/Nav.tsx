@@ -28,7 +28,11 @@ export default function Nav() {
 
   /* Section active (scroll-spy) */
   useEffect(() => {
-    const ids = navItems.map((n) => n.href.slice(1));
+    // Extraire les IDs des sections depuis les liens de navigation
+    const ids = navItems
+      .filter((n) => n.href.startsWith("/#"))
+      .map((n) => n.href.replace("/#", ""));
+    
     const sections = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
@@ -86,10 +90,15 @@ export default function Nav() {
           {/* Navigation desktop */}
           <nav className="hidden items-center gap-7 lg:flex" aria-label="Navigation principale">
             {navItems.map((item) => {
-              const isExternal = item.href.startsWith("/");
-              const isActive = isExternal
-                ? location.pathname === item.href
-                : active === item.href;
+              const isSection = item.href.startsWith("/#");
+              const isPage = item.href === "/carte";
+              
+              // Déterminer si le lien est actif
+              const isActive = isPage
+                ? location.pathname === "/carte"
+                : isSection
+                  ? location.pathname === "/" && active === item.href.replace("/", "")
+                  : false;
 
               const className = `relative text-[11.5px] font-semibold uppercase tracking-[0.18em] transition-colors duration-300 after:absolute after:-bottom-1.5 after:left-0 after:h-px after:bg-current after:transition-all after:duration-300 ${
                 isActive ? "after:w-full" : "after:w-0 hover:after:w-full"
@@ -103,7 +112,8 @@ export default function Nav() {
                     : "text-marine-800 hover:text-marine-950"
               }`;
 
-              if (isExternal) {
+              if (isPage) {
+                // Lien vers une page (/carte)
                 return (
                   <Link
                     key={item.href}
@@ -116,16 +126,36 @@ export default function Nav() {
                 );
               }
 
-              return (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  className={className}
-                  onClick={() => setOpen(false)}
-                >
-                  {item.label}
-                </a>
-              );
+              if (isSection) {
+                // Lien vers une section de la homepage (/#accueil, /#experience, etc.)
+                const sectionId = item.href.replace("/#", "");
+                return (
+                  <Link
+                    key={item.href}
+                    to="/"
+                    className={className}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setOpen(false);
+                      
+                      // Si on est déjà sur la homepage, scroll vers la section
+                      if (location.pathname === "/") {
+                        const element = document.getElementById(sectionId);
+                        if (element) {
+                          element.scrollIntoView({ behavior: "smooth" });
+                        }
+                      } else {
+                        // Si on est sur une autre page, naviguer vers la homepage avec le hash
+                        window.location.href = item.href;
+                      }
+                    }}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              }
+
+              return null;
             })}
           </nav>
 
@@ -171,10 +201,15 @@ export default function Nav() {
           aria-label="Navigation mobile"
         >
           {navItems.map((item, i) => {
-            const isExternal = item.href.startsWith("/");
-            const isActive = isExternal
-              ? location.pathname === item.href
-              : active === item.href;
+            const isSection = item.href.startsWith("/#");
+            const isPage = item.href === "/carte";
+            
+            // Déterminer si le lien est actif
+            const isActive = isPage
+              ? location.pathname === "/carte"
+              : isSection
+                ? location.pathname === "/" && active === item.href.replace("/", "")
+                : false;
 
             const className = `drawer-link group flex items-baseline gap-4 border-b border-ivory-50/10 py-3.5 ${
               isActive ? "text-champagne-300" : "text-ivory-50"
@@ -191,7 +226,8 @@ export default function Nav() {
               </>
             );
 
-            if (isExternal) {
+            if (isPage) {
+              // Lien vers une page (/carte)
               return (
                 <Link
                   key={item.href}
@@ -206,18 +242,38 @@ export default function Nav() {
               );
             }
 
-            return (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                tabIndex={open ? 0 : -1}
-                style={{ animationDelay: open ? `${0.08 + i * 0.06}s` : "0s" }}
-                className={className}
-              >
-                {content}
-              </a>
-            );
+            if (isSection) {
+              // Lien vers une section de la homepage (/#accueil, /#experience, etc.)
+              const sectionId = item.href.replace("/#", "");
+              return (
+                <Link
+                  key={item.href}
+                  to="/"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setOpen(false);
+                    
+                    // Si on est déjà sur la homepage, scroll vers la section
+                    if (location.pathname === "/") {
+                      const element = document.getElementById(sectionId);
+                      if (element) {
+                        element.scrollIntoView({ behavior: "smooth" });
+                      }
+                    } else {
+                      // Si on est sur une autre page, naviguer vers la homepage avec le hash
+                      window.location.href = item.href;
+                    }
+                  }}
+                  tabIndex={open ? 0 : -1}
+                  style={{ animationDelay: open ? `${0.08 + i * 0.06}s` : "0s" }}
+                  className={className}
+                >
+                  {content}
+                </Link>
+              );
+            }
+
+            return null;
           })}
 
           <a
